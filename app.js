@@ -13,47 +13,57 @@ var newAnimal;
 
 //Create Intial Buttons - 
 
-for (var i = 0; i < animals.length; i++) {
-    var newButton = $("<button>").attr('data-animal', animals[i]);
-    newButton.text(animals[i]);
-    newButton.addClass("btn btn-lg animalBtn")
-    $(".buttons").append(newButton);
+function renderButtons() {
+    for (var i = 0; i < animals.length; i++) {
+        var newButton = $("<button>").attr('data-animal', animals[i]);
+        newButton.text(animals[i]);
+        newButton.addClass("btn btn-lg animalBtn")
+        $(".buttons").append(newButton);
+    }
 }
 
+renderButtons();
+
 // listen for button click
-$(".animalBtn").on("click", function(event){
-    searchTerm = $(this).attr("data-animal");
-    console.log("the serach term is " + searchTerm)
+function displayAnimal(){
+        searchTerm = $(this).attr("data-animal");
+        console.log("the serach term is " + searchTerm)
 
-//set up query url
-var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    searchTerm + "&api_key=" + authKey + "&limit=10";
+    //set up query url
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        searchTerm + "&api_key=" + authKey + "&limit=10";
 
-//make api call
-$.ajax({
-    url: queryURL,
-    method: "GET"
-}) .done(function(response){
+    //make api call
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }) .done(function(response){
+        //generate image for each response
+        var results = response.data;
+        //empty results area
+        $(".results").html("");
+        for(var j = 0; j < results.length; j++) {
+        var gifImage =  $("<img>").attr("src", results[j].images.fixed_width.url)
+            $(".results").append(gifImage);
+        }
 
-    //generate image for each response
-    var results = response.data;
-    //empty results area
-    $(".results").html("");
-    for(var j = 0; j < results.length; j++) {
-      var gifImage =  $("<img>").attr("src", results[j].images.fixed_height.url)
-        $(".results").append(gifImage);
-    }
-
-})
-})
-
-//make api call
-//push gifs into html
-//listen for submit button
+    })
+}
+//listen for create button
 $("#add-animal").on("click", function(){
+    //retrieve user input
     newAnimal = $("#search-term").val().trim();
-console.log(newAnimal);
+    //add to array
+    animals.push(newAnimal)
+    //remove original buttons
+    $(".buttons").empty();
+    //generate buttons
+    renderButtons();
+    //empty text field
+    $("#search-term").val("");
 })
+
+$(document).on("click", ".animalBtn", displayAnimal);
 //User input and create new button
 
 
