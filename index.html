@@ -7,33 +7,45 @@
     <title>Giftastic!</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/3/superhero/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="jumbotron">
         <div class="container">
-        <h1>Animals do the Dardest Things</h1>
+        <h1>Animals do the Darndest Things</h1>
+        <p>Click a button below to see 12 gifs of your favorite animals doing the darndest things!</p>
+        <p>Don't see the animal you are looking for? Create your own button in the form below.</p>
+        <p>Don't forget to click the gifs to pause or put them in action for loads of fun!</p>
         </div>
     </div>
     <div class="container">
-        <div class="row buttons"></div>
-        <div class="row">
-            <div class="results col-md-10 col-lg-9 "></div>
-            <div class="form col-md-2 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Create Your Own</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form>
-                            <label for="search">Animal Search:</label>
-                            <input type="text" class="form-control" id="search-term">
-                        </form>
-                        <button class="btn" id="add-animal">Add Animal Button</button>
-                    </div>
+            <div class="row buttonRow">
+                <div class="buttons"></div>
+            </div>
+            <div class="row gifRow">
+                <div class="col-sm-9 col-md-9 col-lg-9">
+                    <div class="row results"></div>
                 </div>
+                <div class="form col-sm-3 col-md-3 col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" id="panelTop">
+                            <h3 class="panel-title">Create Your Own</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <label for="search">Animal Button Creator:</label>
+                                <input type="text" class="form-control" id="search-term">
+                            </form>
+                            <button class="btn" id="add-animal">Add Animal</button>
+                        </div>
+                    </div>
+            </div>
         </div>
     </div>
+    <footer class="footer">
+        Troy A. Crawford 2018
+    </footer>
  
     
 <script src="app.js"></script>

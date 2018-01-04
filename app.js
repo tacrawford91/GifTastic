@@ -5,10 +5,6 @@ var animals = ["dog", "bear", "lion", "cat"];
 var searchTerm;
 var newAnimal;
 
-
-
-
-
 //Begin App
 
 //Create Intial Buttons - 
@@ -31,7 +27,7 @@ function displayAnimal(){
 
     //set up query url
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        searchTerm + "&api_key=" + authKey + "&limit=10";
+        searchTerm + "&api_key=" + authKey + "&limit=12";
 
     //make api call
     $.ajax({
@@ -43,8 +39,16 @@ function displayAnimal(){
         //empty results area
         $(".results").html("");
         for(var j = 0; j < results.length; j++) {
-        var gifImage =  $("<img>").attr("src", results[j].images.fixed_width.url)
-            $(".results").append(gifImage);
+        var stillImage = results[j].images.fixed_width_still.url;
+        var animate = results[j].images.fixed_width.url;
+        var gifImage =  $("<img>").attr("src", results[j].images.fixed_width_still.url, "data-state", "still").addClass("animalImg");
+            gifImage.attr("data-state", "still");
+            gifImage.attr("data-animate", animate);
+            gifImage.attr("data-still", stillImage);
+
+        var animalDiv = $("<div>").append(gifImage).addClass("col-sm-6 col-md-6 col-lg-4");
+            animalDiv.append($("<p>").text(`Gif Rating: ${results[j].rating.toUpperCase()}`).addClass("rating"));
+            $(".results").append(animalDiv);
         }
 
     })
@@ -64,6 +68,22 @@ $("#add-animal").on("click", function(){
 })
 
 $(document).on("click", ".animalBtn", displayAnimal);
-//User input and create new button
 
+
+
+
+//playing- pausing gifs
+function gifState() {
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+        console.log("clicked animal div");
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        console.log("clicked animal div");
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+}
+$(document).on("click", ".animalImg", gifState)
 
