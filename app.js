@@ -5,25 +5,40 @@ var animals = ["dog", "bear", "lion", "cat"];
 var searchTerm;
 var newAnimal;
 
-//Begin App
 
-//Create Intial Buttons - 
 
+//--------------------------------------functions  -
+// create buttons 
 function renderButtons() {
     for (var i = 0; i < animals.length; i++) {
+        //adding attr to button
         var newButton = $("<button>").attr('data-animal', animals[i]);
+        //show button text
         newButton.text(animals[i]);
         newButton.addClass("btn btn-lg animalBtn")
         $(".buttons").append(newButton);
     }
 }
 
-renderButtons();
-
-// listen for button click
+//playing-pausing function 
+function gifState() {
+    var state = $(this).attr("data-state");
+    //check state
+    if (state === "still") {
+        // if still, animate
+        $(this).attr("src", $(this).attr("data-animate"));
+        //update state
+        $(this).attr("data-state", "animate");
+      } else {
+        // if animated, still image
+        $(this).attr("src", $(this).attr("data-still"));
+        //update state
+        $(this).attr("data-state", "still");
+      }
+}
+// Ajax function 
 function displayAnimal(){
         searchTerm = $(this).attr("data-animal");
-        console.log("the serach term is " + searchTerm)
 
     //set up query url
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
@@ -39,7 +54,9 @@ function displayAnimal(){
         //empty results area
         $(".results").html("");
         for(var j = 0; j < results.length; j++) {
+        //get still image for paused image
         var stillImage = results[j].images.fixed_width_still.url;
+        //get gif for animated
         var animate = results[j].images.fixed_width.url;
         var gifImage =  $("<img>").attr("src", results[j].images.fixed_width_still.url, "data-state", "still").addClass("animalImg");
             gifImage.attr("data-state", "still");
@@ -53,6 +70,9 @@ function displayAnimal(){
 
     })
 }
+//Begin App
+renderButtons();
+
 //listen for create button
 $("#add-animal").on("click", function(){
     //retrieve user input
@@ -67,23 +87,8 @@ $("#add-animal").on("click", function(){
     $("#search-term").val("");
 })
 
+//dynamic listen for click on .animalBTN for button rendering and api calling
 $(document).on("click", ".animalBtn", displayAnimal);
-
-
-
-
-//playing- pausing gifs
-function gifState() {
-    var state = $(this).attr("data-state");
-    if (state === "still") {
-        console.log("clicked animal div");
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
-      } else {
-        console.log("clicked animal div");
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-      }
-}
+//dynamic listen for click on .animalIMG for pause/play functionallity 
 $(document).on("click", ".animalImg", gifState)
 
